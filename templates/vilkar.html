@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Vilkår | Nordexa Digital{% endblock %}
+{% block description %}Vilkår for bruk av nettsiden til Nordexa Digital.{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-small">
+  <div class="wrap">
+    <h1>Vilkår</h1>
+    <p>Kort om hva som gjelder når du bruker nettsiden vår.</p>
+  </div>
+</section>
+
+<section class="section wrap narrow prose">
+  <h2>Om nettsiden</h2>
+  <p>
+    Denne nettsiden drives av {{ site.name }}{% if site.org_nr %}, org.nr. {{ site.org_nr }}{% endif %}.
+    Innholdet er ment som informasjon om tjenestene våre.
+  </p>
+
+  <h2>Priser og tilbud</h2>
+  <p>
+    Prisene på nettsiden er veiledende. Hva som leveres, når det leveres og hva det koster,
+    avtales skriftlig i et tilbud før et prosjekt starter. Det er tilbudet som gjelder.
+  </p>
+
+  <h2>Gratis nettsideanalyse</h2>
+  <p>
+    Analysen er automatisk og bygger på det som kan leses ut av forsiden til nettsiden du oppgir.
+    Den er veiledende, og ikke en fullstendig gjennomgang av nettsiden.
+    Bruk den bare på nettsider du selv eier eller har lov til å undersøke.
+  </p>
+
+  <h2>Innholdet på siden</h2>
+  <p>
+    Tekst, design og kode på denne nettsiden tilhører {{ site.name }}.
+    Du kan lenke til siden, men ikke kopiere innholdet uten avtale.
+  </p>
+
+  <h2>Personvern</h2>
+  <p>
+    Hvordan vi behandler personopplysninger, står i
+    <a href="{{ url_for('personvern') }}">personvernerklæringen</a>.
+  </p>
+
+  <h2>Kontakt</h2>
+  <p>
+    Spørsmål om vilkårene kan sendes til <a href="mailto:{{ site.email }}">{{ site.email }}</a>.
+  </p>
+</section>
+{% endblock %}

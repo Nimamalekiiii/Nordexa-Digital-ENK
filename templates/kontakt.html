@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Få en gratis vurdering | Nordexa Digital{% endblock %}
+{% block description %}Fortell oss kort om virksomheten din. Vi vurderer behovet ditt kostnadsfritt og svarer innen 1–2 arbeidsdager.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <h1>La oss bygge noe stort sammen</h1>
+    <p>Fortell oss kort om virksomheten din. Vi vurderer behovet ditt kostnadsfritt.</p>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="contact-wrapper">
+
+    <div class="contact-info">
+      <h2>Kontaktinformasjon</h2>
+
+      <div class="info-box">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.200 7-11.500A7 7 0 0 0 5 9.500C5 14.800 12 21 12 21z"/><circle cx="12" cy="9.500" r="2.500"/></svg>
+        <p>{{ site.address }}</p>
+      </div>
+      <div class="info-box">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        <p><a href="mailto:{{ site.email }}" data-event="klikk_epost">{{ site.email }}</a></p>
+      </div>
+      <div class="info-box">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.500 1.500a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+        <p><a href="tel:{{ site.phone_href }}" data-event="klikk_telefon">{{ site.phone }}</a></p>
+      </div>
+
+      <ul class="check-list contact-points">
+        <li>Gratis første vurdering</li>
+        <li>Svar innen 1–2 arbeidsdager</li>
+        <li>Ingen bindingstid</li>
+      </ul>
+    </div>
+
+    <div class="contact-form" id="skjema">
+      <h2>Send oss en melding</h2>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <p class="flash flash-{{ category }}" role="status">{{ message }}</p>
+        {% endfor %}
+      {% endwith %}
+
+      {% if errors %}
+      <p class="flash flash-feil" role="alert">Meldingen ble ikke sendt. Rett opp feltene som er markert.</p>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('kontakt') }}#skjema" novalidate id="contactForm">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Ikke fyll ut dette feltet</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="input-group{% if errors.name %} has-error{% endif %}">
+          <input type="text" id="name" name="name" placeholder=" " value="{{ form.name }}" maxlength="120" autocomplete="name" required{% if errors.name %} aria-invalid="true" aria-describedby="name-feil"{% endif %}>
+          <label for="name">Navn</label>
+          {% if errors.name %}<p class="field-error" id="name-feil">{{ errors.name }}</p>{% endif %}
+        </div>
+
+        <div class="input-group{% if errors.email %} has-error{% endif %}">
+          <input type="email" id="email" name="email" placeholder=" " value="{{ form.email }}" maxlength="120" autocomplete="email" required{% if errors.email %} aria-invalid="true" aria-describedby="email-feil"{% endif %}>
+          <label for="email">E-post</label>
+          {% if errors.email %}<p class="field-error" id="email-feil">{{ errors.email }}</p>{% endif %}
+        </div>
+
+        <div class="form-row">
+          <div class="input-group input-fixed">
+            <label for="topic">Hva gjelder det?</label>
+            <select id="topic" name="topic">
+              <option value="">Velg (valgfritt)</option>
+              {% for emne in emner %}
+              <option value="{{ emne }}"{% if form.topic == emne %} selected{% endif %}>{{ emne }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="input-group input-fixed{% if errors.meeting %} has-error{% endif %}">
+            <label for="meeting">Ønsket møtetid (valgfritt)</label>
+            <input type="datetime-local" id="meeting" name="meeting" value="{{ form.meeting }}" step="900"{% if errors.meeting %} aria-invalid="true" aria-describedby="meeting-feil"{% endif %}>
+            {% if errors.meeting %}<p class="field-error" id="meeting-feil">{{ errors.meeting }}</p>{% endif %}
+          </div>
+        </div>
+
+        <div class="input-group{% if errors.message %} has-error{% endif %}">
+          <textarea id="message" name="message" rows="5" placeholder=" " maxlength="5000" required{% if errors.message %} aria-invalid="true" aria-describedby="message-feil"{% endif %}>{{ form.message }}</textarea>
+          <label for="message">Fortell kort om virksomheten og hva du trenger</label>
+          {% if errors.message %}<p class="field-error" id="message-feil">{{ errors.message }}</p>{% endif %}
+        </div>
+
+        <button class="btn btn-block" type="submit" data-event="skjema_kontakt" data-busy="Sender …">Få en gratis vurdering</button>
+        <p class="form-note">
+          Vi bruker opplysningene bare til å svare deg.
+          <a href="{{ url_for('personvern') }}">Les om personvern</a>
+        </p>
+      </form>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

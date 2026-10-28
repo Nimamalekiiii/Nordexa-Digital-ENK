@@ -1,0 +1,62 @@
+<section class="blog-block">
+  <h2>1. Bilder som er større enn de trenger å være</h2>
+  <p>
+    Dette er den vanligste årsaken. Et bilde rett fra kameraet kan være flere megabyte,
+    selv om det vises i en liten rute på siden. Nettleseren må likevel laste ned alt.
+  </p>
+  <p>
+    Løsningen er å skalere bildene ned til størrelsen de faktisk vises i, og lagre dem i et
+    moderne format som WebP eller AVIF. Det gir ofte en brøkdel av filstørrelsen uten synlig forskjell.
+  </p>
+</section>
+
+<section class="blog-block">
+  <h2>2. Alt lastes med en gang</h2>
+  <p>
+    Bilder nederst på siden trenger ikke lastes før noen blar ned til dem. Med
+    <code>loading="lazy"</code> på bildene venter nettleseren til de trengs, og toppen av
+    siden blir raskere synlig.
+  </p>
+</section>
+
+<section class="blog-block">
+  <h2>3. Skript som holder igjen siden</h2>
+  <p>
+    Skript som står i toppen av siden uten <code>defer</code> eller <code>async</code> må lastes
+    og kjøres før nettleseren får vist noe som helst. Jo flere slike, jo lenger ser den
+    besøkende på en hvit skjerm.
+  </p>
+  <p>
+    Mange nettsider har også samlet opp utvidelser og sporingsverktøy som ingen bruker lenger.
+    Hvert av dem koster tid. Rydd bort det som ikke gjør nytte.
+  </p>
+</section>
+
+<section class="blog-block">
+  <h2>4. Ingen komprimering eller mellomlagring</h2>
+  <p>
+    En server kan sende tekstfiler komprimert, slik at de blir mye mindre på veien. Den kan
+    også fortelle nettleseren at filer som logo og stilark kan gjenbrukes ved neste besøk.
+    Begge deler er innstillinger på serveren, og de er ofte slått av uten at noen har tenkt over det.
+  </p>
+</section>
+
+<section class="blog-block">
+  <h2>5. Skrifttyper som blokkerer teksten</h2>
+  <p>
+    Egne skrifttyper må lastes ned før de kan brukes. Hvis siden ikke sier noe annet, kan
+    teksten være usynlig mens nettleseren venter. Med <code>font-display: swap</code> vises
+    teksten med en gang i en reserveskrift, og byttes når den riktige er klar.
+  </p>
+</section>
+
+<section class="blog-block">
+  <h2>Sjekk din egen side</h2>
+  <p>
+    Flere av disse punktene kan måles automatisk. Vi har laget en gratis analyse som sjekker
+    forsiden din og forteller hva vi ville forbedret først.
+  </p>
+  <p>
+    <a class="btn" href="{{ url_for('nettsideanalyse') }}" data-event="analyse_blogg">Få gratis nettsideanalyse</a>
+  </p>
+</section>

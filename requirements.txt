@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Mail
+Flask-Login
+Flask-WTF
+Flask-Limiter
+python-dotenv
+gunicorn
+# Bare nødvendig hvis du bruker PostgreSQL i stedet for SQLite:
+# psycopg2-binary

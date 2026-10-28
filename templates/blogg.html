@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Blogg | Nordexa Digital{% endblock %}
+{% block description %}Artikler om nettsider, hastighet, synlighet og hva som får besøkende til å ta kontakt.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <h1>Blogg</h1>
+    <p>Om nettsider, hastighet, synlighet og hva som får besøkende til å ta kontakt.</p>
+  </div>
+</section>
+
+<section class="section wrap narrow">
+  <ul class="post-list">
+    {% for i in innlegg %}
+    <li class="reveal">
+      <a href="{{ url_for('blogginnlegg', slug=i.slug) }}">
+        <p class="post-meta"><time datetime="{{ i.dato }}">{{ i.dato|langdato }}</time>, {{ i.lesetid }} min lesetid</p>
+        <h2>{{ i.tittel }}</h2>
+        <p>{{ i.ingress }}</p>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% include "_cta.html" %}
+{% endblock %}

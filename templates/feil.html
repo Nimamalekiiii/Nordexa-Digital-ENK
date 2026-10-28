@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} | Nordexa Digital{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+<section class="section wrap error-page">
+  <p class="error-code grad-text">{{ code }}</p>
+  <h1>{{ title }}</h1>
+  <p>{{ message }}</p>
+  <div class="hero-actions">
+    <a class="btn" href="{{ url_for('home') }}">Gå til forsiden</a>
+    <a class="btn btn-ghost" href="{{ url_for('kontakt') }}">Kontakt oss</a>
+  </div>
+</section>
+{% endblock %}

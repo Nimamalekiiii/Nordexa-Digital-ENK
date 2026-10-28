@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Søk | Nordexa Digital{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-small">
+  <div class="wrap">
+    <h1>Søk</h1>
+    {% if query %}
+    <p>{{ results|length }} treff på «{{ query }}»</p>
+    {% else %}
+    <p>Skriv inn det du leter etter.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section wrap narrow">
+  <form class="search-form search-form-page" action="{{ url_for('sok') }}" method="GET" role="search">
+    <label class="visually-hidden" for="q">Søk på nettsiden</label>
+    <input type="search" id="q" name="q" value="{{ query }}" placeholder="Hva leter du etter?" maxlength="80" required>
+    <button class="btn btn-small" type="submit">Søk</button>
+  </form>
+
+  {% if results %}
+  <ul class="post-list">
+    {% for page in results %}
+    <li>
+      <a href="{{ page.url }}">
+        <h2>{{ page.title }}</h2>
+        <p>{{ page.text }}</p>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% elif query %}
+  <div class="empty-state">
+    <h2>Ingen sider passer med «{{ query }}»</h2>
+    <p>Prøv et annet ord, for eksempel «priser», «nettbutikk» eller «kontakt».</p>
+    <a class="btn btn-ghost" href="{{ url_for('home') }}">Gå til forsiden</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

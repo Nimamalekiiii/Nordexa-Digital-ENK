@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Om oss | Nordexa Digital{% endblock %}
+{% block description %}Nordexa Digital er et digitalbyrå i Oslo, drevet av Nima Maleki. Vi kombinerer design, teknologi og forretningsforståelse.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <h1>Fremtid gjennom digitalisering</h1>
+    <p>Optimalisert for vekst, synlighet og konvertering.</p>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="about-glass reveal">
+
+    <h2>Hvem er vi?</h2>
+    <p>
+      Nordexa Digital er et moderne digitalbyrå med fokus på strategi,
+      design og konvertering. Vi kombinerer teknologi og psykologi for
+      å skape nettsider som faktisk leverer resultater.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="founder">
+      {% if har_bilde %}
+      <img class="founder-photo" src="{{ asset('img/nima.webp') }}" alt="Portrett av Nima Maleki" width="480" height="480" loading="lazy" decoding="async">
+      {% else %}
+      <div class="founder-photo founder-initials" aria-hidden="true">NM</div>
+      {% endif %}
+      <div>
+        <h2>Nima Maleki</h2>
+        <p class="founder-role">Grunnlegger og utvikler</p>
+        <p>
+          Nima studerer IT og cybersikkerhet ved Høyskolen Kristiania og har en årsenhet i
+          bedriftsøkonomi fra BI. Før han startet Nordexa Digital jobbet han i flere år med salg
+          og kundeservice, og vet hvor mye som avgjøres i det første møtet mellom en kunde og en bedrift.
+        </p>
+        <p>
+          Den kombinasjonen preger alt vi lager: sikker og ryddig kode, og en nettside bygget
+          rundt hva kunden din faktisk leter etter.
+        </p>
+        <ul class="tech-list tech-list-small">
+          {% for navn in teknologi %}<li>{{ navn }}</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Vår visjon</h2>
+    <p>
+      Å gjøre profesjonell digital tilstedeværelse tilgjengelig for
+      ambisiøse bedrifter som ønsker å vokse.
+    </p>
+
+    <div class="feature-row">
+      {% for punkt in hvorfor %}
+      <div class="mini-card reveal">
+        <h3>{{ punkt.tittel }}</h3>
+        <p>{{ punkt.tekst }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+{% include "_cta.html" %}
+{% endblock %}

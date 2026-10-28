@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from "_makroer.html" import ikon with context %}
+{% block title %}Tjenester | Nordexa Digital{% endblock %}
+{% block description %}Nettsider, webapplikasjoner, nettbutikk, UX/UI-design, optimalisering og vedlikehold. Se hva Nordexa Digital kan gjøre for bedriften din.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <h1>Våre tjenester</h1>
+    <p>Vi bygger digitale løsninger som skaper målbar vekst.</p>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="service-list">
+    {% for t in tjenester %}
+    <article class="service reveal" id="{{ t.id }}">
+      {{ ikon(t.ikon) }}
+      <h2>{{ t.tittel }}</h2>
+      <p>{{ t.kort }}</p>
+      <ul class="check-list">
+        {% for punkt in t.punkter %}<li>{{ punkt }}</li>{% endfor %}
+      </ul>
+      <a class="text-link" href="{{ url_for('kontakt', emne=t.tittel) }}" data-event="tjeneste_{{ t.id }}">Spør om {{ t.tittel|lower }}</a>
+    </article>
+    {% endfor %}
+  </div>
+
+  <p class="section-foot">
+    <a class="btn btn-ghost" href="{{ url_for('priser') }}">Se priser og pakker</a>
+  </p>
+</section>
+
+{% include "_cta.html" %}
+{% endblock %}

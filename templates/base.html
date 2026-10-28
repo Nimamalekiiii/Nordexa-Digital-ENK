@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ site.name }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}Nordexa Digital bygger moderne, raske nettsider som gjør besøkende til kunder. Få en gratis vurdering.{% endblock %}">
+  <meta name="theme-color" content="#080c14">
+  {% block robots %}<link rel="canonical" href="{{ canonical }}">{% endblock %}
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:title" content="{{ self.title() }}">
+  <meta property="og:description" content="{{ self.description() }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:image" content="{{ site_root }}{% block og_image %}{{ url_for('static', filename='img/deling.png') }}{% endblock %}">
+  <meta property="og:locale" content="nb_NO">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="{{ asset('img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <script src="{{ asset('js/boot.js') }}"></script>
+  <script src="{{ asset('js/script.js') }}" defer></script>
+  {% block structured %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+<a class="skip-link" href="#innhold">Hopp til innholdet</a>
+
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a class="logo" href="{{ url_for('home') }}" aria-label="{{ site.name }}, forside">
+      Nordexa <span class="logo-dark">Digital</span>
+    </a>
+
+    <nav class="nav-links" id="navLinks" aria-label="Hovedmeny">
+      {% for endpoint, label in nav %}
+      <a href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint or (endpoint == 'prosjekter' and request.endpoint == 'prosjekt') or (endpoint == 'blogg' and request.endpoint == 'blogginnlegg') %} aria-current="page"{% endif %}>{{ label }}</a>
+      {% endfor %}
+      <a class="btn btn-small nav-cta" href="{{ url_for('kontakt') }}" data-event="cta_meny">Få en gratis vurdering</a>
+    </nav>
+
+    <div class="nav-tools">
+      <button class="icon-btn" id="searchToggle" type="button" aria-label="Åpne søk" aria-expanded="false" aria-controls="searchOverlay">
+        <svg class="icon-search" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.600-3.600"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-label="Åpne menyen" aria-expanded="false" aria-controls="navLinks">
+        <span class="menu-bars" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="search-overlay" id="searchOverlay" hidden>
+  <form class="search-form" action="{{ url_for('sok') }}" method="GET" role="search">
+    <label class="visually-hidden" for="searchInput">Søk på nettsiden</label>
+    <input type="search" id="searchInput" name="q" placeholder="Hva leter du etter?" maxlength="80" required>
+    <button class="btn btn-small" type="submit">Søk</button>
+  </form>
+</div>
+
+<main id="innhold">
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-col footer-brand">
+      <a class="logo" href="{{ url_for('home') }}">Nordexa <span class="logo-dark">Digital</span></a>
+      <p>{{ site.slagord }}</p>
+    </div>
+
+    <div class="footer-col">
+      <h2>Tjenester</h2>
+      <ul>
+        {% for t in tjenester %}
+        <li><a href="{{ url_for('tjenester') }}#{{ t.id }}">{{ t.tittel }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h2>Selskap</h2>
+      <ul>
+        <li><a href="{{ url_for('om_oss') }}">Om oss</a></li>
+        <li><a href="{{ url_for('prosjekter') }}">Prosjekter</a></li>
+        <li><a href="{{ url_for('prosess') }}">Prosess</a></li>
+        <li><a href="{{ url_for('priser') }}">Priser</a></li>
+        <li><a href="{{ url_for('blogg') }}">Blogg</a></li>
+        <li><a href="{{ url_for('nettsideanalyse') }}">Gratis nettsideanalyse</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h2>Kontakt</h2>
+      <ul>
+        <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+        <li><a href="tel:{{ site.phone_href }}">{{ site.phone }}</a></li>
+        <li>{{ site.address }}</li>
+        <li><a href="{{ url_for('kontakt') }}">Kontaktskjema</a></li>
+      </ul>
+      {% if site.linkedin or site.instagram %}
+      <h2 class="footer-sub">Følg oss</h2>
+      <ul>
+        {% if site.linkedin %}<li><a href="{{ site.linkedin }}" rel="noopener">LinkedIn</a></li>{% endif %}
+        {% if site.instagram %}<li><a href="{{ site.instagram }}" rel="noopener">Instagram</a></li>{% endif %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© {{ year }} {{ site.name }}{% if site.org_nr %}, org.nr. {{ site.org_nr }}{% endif %}</p>
+    <ul class="footer-legal">
+      <li><a href="{{ url_for('personvern') }}">Personvern</a></li>
+      <li><a href="{{ url_for('personvern') }}#informasjonskapsler">Informasjonskapsler</a></li>
+      <li><a href="{{ url_for('vilkar') }}">Vilkår</a></li>
+    </ul>
+  </div>
+</footer>
+
+<div class="cookie-banner" id="cookieBanner" role="region" aria-label="Informasjonskapsler" hidden>
+  <p>
+    Vi bruker bare informasjonskapsler som er nødvendige for at siden skal virke.
+    <a href="{{ url_for('personvern') }}#informasjonskapsler">Les mer</a>
+  </p>
+  <button class="btn btn-small" id="acceptCookies" type="button">Greit</button>
+</div>
+
+</body>
+</html>

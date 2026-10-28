@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Personvern og informasjonskapsler | Nordexa Digital{% endblock %}
+{% block description %}Hvilke opplysninger Nordexa Digital lagrer om deg, hvorfor, hvem som får dem, og hvilke rettigheter du har.{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-small">
+  <div class="wrap">
+    <h1>Personvern og informasjonskapsler</h1>
+    <p>Hva vi lagrer om deg, hvorfor, og hva du kan kreve.</p>
+  </div>
+</section>
+
+<section class="section wrap narrow prose">
+  <h2>Hvem er ansvarlig?</h2>
+  <p>
+    {{ site.name }}{% if site.org_nr %} (org.nr. {{ site.org_nr }}){% endif %} er behandlingsansvarlig
+    for personopplysningene som samles inn på denne nettsiden.
+    Har du spørsmål, skriv til <a href="mailto:{{ site.email }}">{{ site.email }}</a>.
+  </p>
+
+  <h2>Kontaktskjemaet</h2>
+  <p>
+    Når du sender kontaktskjemaet, lagrer vi navnet, e-postadressen og meldingen din, og
+    hva henvendelsen gjelder og ønsket møtetid hvis du har fylt det ut.
+    Vi bruker opplysningene bare til å svare deg og følge opp et eventuelt samarbeid.
+    Grunnlaget er at du selv har bedt om å bli kontaktet.
+  </p>
+
+  <h2>Gratis nettsideanalyse</h2>
+  <p>
+    Når du bestiller en nettsideanalyse, lagrer vi adressen til nettsiden, e-postadressen din
+    og rapporten. Vi kan sende deg én e-post for å følge opp resultatet. Rapporten ligger på en
+    adresse som bare du har fått, og som ikke vises i søkemotorer.
+  </p>
+
+  <h2>Hvem får opplysningene?</h2>
+  <p>
+    Vi selger ikke opplysninger og deler dem ikke med andre. De behandles av leverandørene vi
+    trenger for å drive nettsiden og e-posten vår: selskapet som drifter serveren, og Google,
+    som leverer e-posten vår.
+  </p>
+
+  <h2>Hvor lenge?</h2>
+  <p>
+    Vi beholder henvendelser og analyser så lenge det er nødvendig for å følge dem opp.
+    Du kan når som helst be oss slette dem.
+  </p>
+
+  <h2 id="informasjonskapsler">Informasjonskapsler</h2>
+  <p>
+    Nettsiden bruker bare informasjonskapsler som er nødvendige for at den skal virke:
+    én som beskytter skjemaene mot misbruk, og én som holder administrator innlogget.
+    Vi bruker ingen informasjonskapsler til sporing, statistikk eller reklame, og derfor
+    ber vi heller ikke om samtykke.
+  </p>
+  <p>
+    Nettleseren din husker også at du har lukket meldingen om informasjonskapsler.
+    Det lagres lokalt hos deg og sendes ikke til oss.
+  </p>
+
+  <h2>Statistikk uten sporing</h2>
+  <p>
+    Vi teller hvor mange ganger hver side blir vist, hvilket nettsted besøket kom fra, og
+    hvor mange som trykker på knappene våre. Vi lagrer ikke IP-adressen din, bruker ingen
+    informasjonskapsler til dette, og kan ikke knytte tallene til deg som person.
+    Har du slått på «Ikke spor» eller Global Privacy Control i nettleseren, teller vi deg ikke.
+  </p>
+
+  <h2>Skrifttyper fra Google</h2>
+  <p>
+    Skrifttypene på siden hentes fra Google Fonts. Da får Google vite IP-adressen din,
+    slik alle nettsteder gjør når du henter noe fra dem.
+  </p>
+
+  <h2>Dine rettigheter</h2>
+  <p>
+    Du kan be om innsyn i opplysningene vi har om deg, få dem rettet eller få dem slettet.
+    Send en e-post til <a href="mailto:{{ site.email }}">{{ site.email }}</a>, så svarer vi innen 30 dager.
+    Mener du at vi behandler opplysningene dine feil, kan du klage til
+    <a href="https://www.datatilsynet.no" rel="noopener">Datatilsynet</a>.
+  </p>
+</section>
+{% endblock %}

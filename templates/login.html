@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Logg inn | Nordexa Digital{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+<section class="section wrap auth-wrap">
+  <div class="contact-form auth-card">
+    <h1>Logg inn</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      <p class="flash flash-{{ category }}" role="alert">{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('login') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <div class="input-group">
+        <input type="text" id="username" name="username" placeholder=" " autocomplete="username" required>
+        <label for="username">Brukernavn</label>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="password" name="password" placeholder=" " autocomplete="current-password" required>
+        <label for="password">Passord</label>
+      </div>
+
+      <button class="btn btn-block" type="submit">Logg inn</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ p.tittel }} | Prosjekter | Nordexa Digital{% endblock %}
+{% block description %}{{ p.kort }}{% endblock %}
+{% block og_image %}{{ url_for('static', filename=p.bilde) }}{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-small">
+  <div class="wrap">
+    <p class="crumb"><a href="{{ url_for('prosjekter') }}">Prosjekter</a></p>
+    <h1>{{ p.tittel }}</h1>
+    <p>{{ p.kort }}</p>
+  </div>
+</section>
+
+<section class="section wrap">
+  <figure class="case-image">
+    <img src="{{ asset(p.bilde) }}" alt="{{ p.bilde_alt }}" width="1200" height="750" fetchpriority="high">
+  </figure>
+
+  <div class="case-grid">
+    <div class="case-body">
+      <h2>Mål</h2>
+      <p>{{ p.mal }}</p>
+
+      <h2>Løsning</h2>
+      <p>{{ p.losning }}</p>
+
+      {% if p.resultat %}
+      <h2>Resultat</h2>
+      <ul class="check-list">
+        {% for punkt in p.resultat %}<li>{{ punkt }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <aside class="case-facts">
+      <dl>
+        <dt>Type</dt>
+        <dd>{{ p.type }}</dd>
+        <dt>Fag</dt>
+        <dd>{{ p.fag|join(", ") }}</dd>
+        <dt>Teknologi</dt>
+        <dd>
+          <ul class="tech-list tech-list-small">
+            {% for navn in p.teknologi %}<li>{{ navn }}</li>{% endfor %}
+          </ul>
+        </dd>
+      </dl>
+    </aside>
+  </div>
+
+  <p class="section-foot case-next">
+    <a class="btn" href="{{ url_for('kontakt') }}" data-event="cta_prosjekt">Få en gratis vurdering</a>
+    <a class="btn btn-ghost" href="{{ url_for('prosjekt', slug=neste.slug) }}">Neste prosjekt: {{ neste.tittel }}</a>
+  </p>
+</section>
+{% endblock %}

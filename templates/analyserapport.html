@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Nettsideanalyse | Nordexa Digital{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-small">
+  <div class="wrap">
+    <p class="crumb"><a href="{{ url_for('nettsideanalyse') }}">Gratis nettsideanalyse</a></p>
+    <h1>Rapport for {{ r.url|replace("https://", "")|replace("http://", "")|truncate(48, true, "…") }}</h1>
+    <p class="post-meta">Analysert {{ audit.created_at|dato }}. Automatisk sjekk av forsiden.</p>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="report">
+    <div class="report-scores">
+      {% for kategori in kategorier %}
+      {% set p = r.poeng[kategori] %}
+      <div class="score {% if p >= 80 %}score-god{% elif p >= 50 %}score-middels{% else %}score-svak{% endif %}">
+        <div class="score-head">
+          <span>{{ kategori }}</span>
+          <span><span class="stat-number" data-target="{{ p }}">{{ p }}</span>/100</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" data-width="{{ p }}"></div></div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="report-top">
+      <h2>{% if r.forbedringer %}{{ r.forbedringer|length }} ting vi ville forbedret først{% else %}Ingenting å utsette på her{% endif %}</h2>
+      {% if r.forbedringer %}
+      <ol class="improve-list">
+        {% for f in r.forbedringer %}
+        <li><strong>{{ f.kategori }}</strong>{{ f.tekst }}</li>
+        {% endfor %}
+      </ol>
+      {% else %}
+      <p class="muted">Forsiden besto alle de automatiske sjekkene våre.</p>
+      {% endif %}
+      <a class="btn" href="{{ url_for('kontakt') }}" data-event="cta_rapport">Få en gratis vurdering</a>
+      <p class="form-note">Vi går gjennom rapporten sammen med deg og forteller hva det vil kreve å fikse.</p>
+    </div>
+  </div>
+
+  <div class="report-detail">
+    <h2>Alle sjekkene</h2>
+    {% for kategori in kategorier %}
+    <details class="faq-item">
+      <summary>{{ kategori }} <span class="muted">{{ r.poeng[kategori] }}/100</span></summary>
+      <div class="faq-answer">
+        <ul class="result-checks">
+          {% for s in r.sjekker if s.kategori == kategori %}
+          <li class="{{ 'ok' if s.ok else 'ikke-ok' }}"><span class="visually-hidden">{{ 'Bra:' if s.ok else 'Kan forbedres:' }}</span>{{ s.tekst }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </details>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

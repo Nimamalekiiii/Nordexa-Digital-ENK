@@ -1,0 +1,85 @@
+{# Små byggeklosser som brukes på flere sider #}
+
+{% macro ikon(navn) %}
+<svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true">
+  {% if navn == "nettside" %}<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 21h8"/>
+  {% elif navn == "app" %}<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/>
+  {% elif navn == "butikk" %}<path d="M4 7h16l-1.500 9h-13z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/><circle cx="9" cy="20" r="1"/><circle cx="16" cy="20" r="1"/>
+  {% elif navn == "design" %}<path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/>
+  {% elif navn == "fart" %}<path d="M13 3 5 13h6l-1 8 8-10h-6z"/>
+  {% elif navn == "verktoy" %}<path d="M14.500 6a4 4 0 0 0 5 5L11 19.500a2.100 2.100 0 0 1-3-3z"/><path d="M14.500 6 17 3.500"/>
+  {% endif %}
+</svg>
+{% endmacro %}
+
+{% macro prosjektkort(p) %}
+<a class="project-card reveal" href="{{ url_for('prosjekt', slug=p.slug) }}">
+  <div class="project-image">
+    <img src="{{ asset(p.bilde) }}" alt="{{ p.bilde_alt }}" width="1200" height="750" loading="lazy" decoding="async">
+  </div>
+  <div class="project-body">
+    <div>
+      <h3>{{ p.tittel }}</h3>
+      <p>{{ p.fag|join(", ") }}</p>
+    </div>
+    <span class="project-type">{{ p.type }}</span>
+  </div>
+</a>
+{% endmacro %}
+
+{% macro pakker_grid(pakker) %}
+<div class="pricing-section">
+  {% for pakke in pakker %}
+  <div class="pricing-card{% if pakke.anbefalt %} featured{% endif %}">
+    {% if pakke.anbefalt %}<span class="badge">Anbefalt</span>{% endif %}
+    <h3>{{ pakke.navn }}</h3>
+    <p class="pricing-for">{{ pakke.for }}</p>
+    <div class="price">{% if pakke.fra %}<small>Fra</small> {% endif %}{{ pakke.pris }}</div>
+    <ul class="check-list">
+      {% for punkt in pakke.punkter %}<li>{{ punkt }}</li>{% endfor %}
+    </ul>
+    <a href="{{ url_for('kontakt', pakke=pakke.navn) }}" class="btn{% if not pakke.anbefalt %} btn-ghost{% endif %}" data-event="pakke_{{ pakke.navn|lower }}">{{ pakke.knapp }}</a>
+  </div>
+  {% endfor %}
+</div>
+{% if site.prisnote %}<p class="price-note muted">{{ site.prisnote }}</p>{% endif %}
+{% endmacro %}
+
+{% macro faq_liste(faq) %}
+<div class="faq">
+  {% for item in faq %}
+  <details class="faq-item">
+    <summary>{{ item.sporsmal }}</summary>
+    <div class="faq-answer"><p>{{ item.svar }}</p></div>
+  </details>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro analyseskjema(form, errors, knapp_event) %}
+<form class="audit-form" method="POST" action="{{ url_for('nettsideanalyse') }}" novalidate>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="hp-field" aria-hidden="true">
+    <label for="audit-website">Ikke fyll ut dette feltet</label>
+    <input type="text" id="audit-website" name="website" tabindex="-1" autocomplete="off">
+  </div>
+
+  <div class="input-group{% if errors.url %} has-error{% endif %}">
+    <input type="text" id="audit-url" name="url" placeholder=" " value="{{ form.url }}" maxlength="300" inputmode="url" autocomplete="url" required{% if errors.url %} aria-invalid="true" aria-describedby="audit-url-feil"{% endif %}>
+    <label for="audit-url">Nettside, f.eks. www.firma.no</label>
+    {% if errors.url %}<p class="field-error" id="audit-url-feil">{{ errors.url }}</p>{% endif %}
+  </div>
+
+  <div class="input-group{% if errors.email %} has-error{% endif %}">
+    <input type="email" id="audit-email" name="email" placeholder=" " value="{{ form.email }}" maxlength="120" autocomplete="email" required{% if errors.email %} aria-invalid="true" aria-describedby="audit-email-feil"{% endif %}>
+    <label for="audit-email">E-post</label>
+    {% if errors.email %}<p class="field-error" id="audit-email-feil">{{ errors.email }}</p>{% endif %}
+  </div>
+
+  <button class="btn btn-block" type="submit" data-event="{{ knapp_event }}" data-busy="Analyserer siden …">Få gratis nettsideanalyse</button>
+  <p class="form-note">
+    Rapporten vises med en gang. Vi lagrer adressen og e-posten din, og kan følge opp med én e-post.
+    <a href="{{ url_for('personvern') }}">Les om personvern</a>
+  </p>
+</form>
+{% endmacro %}

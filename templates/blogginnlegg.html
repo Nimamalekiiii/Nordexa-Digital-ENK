@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ innlegg.tittel }} | Nordexa Digital{% endblock %}
+{% block description %}{{ innlegg.ingress }}{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block structured %}
+<script type="application/ld+json">{{ {
+  "@context": "https://schema.org", "@type": "BlogPosting",
+  "headline": innlegg.tittel, "description": innlegg.ingress, "datePublished": innlegg.dato,
+  "inLanguage": "nb", "mainEntityOfPage": canonical,
+  "author": {"@type": "Organization", "name": site.name},
+  "publisher": {"@type": "Organization", "name": site.name}
+}|tojson_ld|safe }}</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-small">
+  <div class="wrap">
+    <p class="crumb"><a href="{{ url_for('blogg') }}">Blogg</a></p>
+    <h1>{{ innlegg.tittel }}</h1>
+    <p class="post-meta"><time datetime="{{ innlegg.dato }}">{{ innlegg.dato|langdato }}</time>, {{ innlegg.lesetid }} min lesetid</p>
+  </div>
+</section>
+
+<article class="section blog-container wrap">
+  <div class="blog-timeline" id="blogTimeline">
+    <div class="blog-track" aria-hidden="true"><div class="blog-progress" id="blogProgress"></div></div>
+    {% include "blogg/" + innlegg.slug + ".html" %}
+  </div>
+</article>
+
+<section class="section wrap narrow">
+  <div class="section-head"><h2>Les også</h2></div>
+  <ul class="post-list">
+    {% for i in andre %}
+    <li>
+      <a href="{{ url_for('blogginnlegg', slug=i.slug) }}">
+        <p class="post-meta"><time datetime="{{ i.dato }}">{{ i.dato|langdato }}</time>, {{ i.lesetid }} min lesetid</p>
+        <h3>{{ i.tittel }}</h3>
+        <p>{{ i.ingress }}</p>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% include "_cta.html" %}
+{% endblock %}

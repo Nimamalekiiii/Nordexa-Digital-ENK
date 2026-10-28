@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% from "_makroer.html" import prosjektkort with context %}
+{% block title %}Prosjekter | Nordexa Digital{% endblock %}
+{% block description %}Se nettsider og webapplikasjoner vi har designet og bygget, med mål, løsning og teknologi for hvert prosjekt.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <h1>Arbeid som snakker for seg selv.</h1>
+    <p>Åpne et prosjekt for å se hva målet var, hvordan vi løste det, og hva det er bygget med.</p>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="project-grid">
+    {% for p in prosjekter %}{{ prosjektkort(p) }}{% endfor %}
+  </div>
+</section>
+
+{% if omtaler %}
+<section class="section testimonials">
+  <div class="wrap">
+    <div class="section-head"><h2>Hva kundene sier</h2></div>
+    <div class="quote-grid">
+      {% for o in omtaler %}
+      <figure class="quote reveal">
+        <blockquote><p>{{ o.sitat }}</p></blockquote>
+        <figcaption><strong>{{ o.navn }}</strong>, {{ o.rolle }}, {{ o.firma }}</figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% include "_cta.html" %}
+{% endblock %}

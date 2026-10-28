@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Prosess | Nordexa Digital{% endblock %}
+{% block description %}Slik jobber vi: strategi, design, utvikling, testing, lansering og videreutvikling.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <h1>Fra idé til ferdig løsning.</h1>
+    <p>Seks steg, i samme rekkefølge hver gang. Du vet alltid hva som skjer nå, og hva som kommer etterpå.</p>
+  </div>
+</section>
+
+<section class="section wrap narrow">
+  <ol class="timeline">
+    {% for steg in prosess %}
+    <li class="timeline-step reveal">
+      <span class="timeline-number">{{ "%02d"|format(loop.index) }}</span>
+      <div>
+        <h2>{{ steg.tittel }}</h2>
+        <p>{{ steg.tekst }}</p>
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+
+{% include "_cta.html" %}
+{% endblock %}

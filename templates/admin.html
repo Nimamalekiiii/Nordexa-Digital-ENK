@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Admin | Nordexa Digital{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+
+{% macro stolper(tittel, rader, tomt) %}
+<div class="stat-block">
+  <h3>{{ tittel }}</h3>
+  {% if rader %}
+  <ul class="stat-rows">
+    {% for rad in rader %}
+    <li>
+      <span class="stat-name">{{ rad.navn }}</span>
+      <span class="stat-count">{{ rad.antall }}</span>
+      <div class="bar-track"><div class="bar-fill" data-width="{{ rad.prosent }}"></div></div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="muted">{{ tomt }}</p>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{% block content %}
+<section class="section wrap admin">
+  <div class="admin-head">
+    <div>
+      <h1>Admin</h1>
+      <p class="muted">Henvendelser, analyser og statistikk for nettsiden</p>
+    </div>
+    <form method="POST" action="{{ url_for('logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-ghost btn-small" type="submit">Logg ut</button>
+    </form>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <p class="flash flash-{{ category }}" role="status">{{ message }}</p>
+    {% endfor %}
+  {% endwith %}
+
+  <h2 class="admin-title">Siste {{ stat.dager }} dager</h2>
+  <div class="stat-tiles">
+    <div class="stat-tile"><span class="stat-big">{{ stat.visninger }}</span><span>sidevisninger</span></div>
+    <div class="stat-tile"><span class="stat-big">{{ stat.henvendelser }}</span><span>henvendelser</span></div>
+    <div class="stat-tile"><span class="stat-big">{{ stat.analyser }}</span><span>nettsideanalyser</span></div>
+  </div>
+
+  <div class="stat-grid growth-section in-view">
+    {{ stolper("Mest besøkte sider", stat.sider, "Ingen besøk registrert ennå.") }}
+    {{ stolper("Hvor besøkende kommer fra", stat.kilder, "Ingen besøk fra andre nettsteder ennå.") }}
+    {{ stolper("Klikk på knapper", stat.klikk, "Ingen klikk registrert ennå.") }}
+    {{ stolper("Hva henvendelsene gjelder", stat.emner, "Ingen har valgt emne i skjemaet ennå.") }}
+  </div>
+  <p class="form-note">Tallene samles inn uten informasjonskapsler og uten IP-adresser. Dine egne besøk telles ikke mens du er logget inn.</p>
+
+  <h2 class="admin-title" id="henvendelser">Henvendelser ({{ contacts|length }})</h2>
+  {% for contact in contacts %}
+  <article class="lead-card">
+    <header>
+      <h3>{{ contact.name }}</h3>
+      <time>{{ contact.created_at|dato }}</time>
+    </header>
+    {% if contact.topic or contact.meeting %}
+    <p class="lead-tags">
+      {% if contact.topic %}<span>Gjelder: {{ contact.topic }}</span>{% endif %}
+      {% if contact.meeting %}<span>Ønsket møte: {{ contact.meeting }}</span>{% endif %}
+    </p>
+    {% endif %}
+    <p class="lead-message">{{ contact.message }}</p>
+    <footer>
+      <a class="btn btn-small" href="mailto:{{ contact.email }}">Svar til {{ contact.email }}</a>
+      <form method="POST" action="{{ url_for('slett_melding', contact_id=contact.id) }}" class="confirm-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-ghost btn-small btn-danger" type="submit">Slett</button>
+      </form>
+    </footer>
+  </article>
+  {% else %}
+  <div class="empty-state">
+    <h3>Ingen henvendelser ennå</h3>
+    <p>Når noen sender kontaktskjemaet, dukker meldingen opp her.</p>
+    <a class="btn btn-ghost" href="{{ url_for('kontakt') }}">Åpne kontaktskjemaet</a>
+  </div>
+  {% endfor %}
+
+  <h2 class="admin-title" id="analyser">Nettsideanalyser ({{ audits|length }})</h2>
+  {% for audit in audits %}
+  <article class="lead-card">
+    <header>
+      <h3>{{ audit.url|replace("https://", "")|replace("http://", "") }}</h3>
+      <time>{{ audit.created_at|dato }}</time>
+    </header>
+    <p class="lead-tags"><span>Snitt: {{ audit.snitt }}/100</span></p>
+    <footer>
+      <a class="btn btn-small" href="mailto:{{ audit.email }}">Følg opp {{ audit.email }}</a>
+      <a class="btn btn-ghost btn-small" href="{{ url_for('analyserapport', token=audit.token) }}">Se rapporten</a>
+      <form method="POST" action="{{ url_for('slett_analyse', audit_id=audit.id) }}" class="confirm-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-ghost btn-small btn-danger" type="submit">Slett</button>
+      </form>
+    </footer>
+  </article>
+  {% else %}
+  <div class="empty-state">
+    <h3>Ingen analyser ennå</h3>
+    <p>Når noen bestiller en gratis nettsideanalyse, ser du adressen og e-posten deres her.</p>
+    <a class="btn btn-ghost" href="{{ url_for('nettsideanalyse') }}">Åpne analysen</a>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}

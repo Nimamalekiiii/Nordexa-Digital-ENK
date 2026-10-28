@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% from "_makroer.html" import ikon, prosjektkort, pakker_grid, faq_liste, analyseskjema with context %}
+{% block title %}Nordexa Digital | Nettsider som skaper vekst{% endblock %}
+
+{% block structured %}
+<script type="application/ld+json">{{ {
+  "@context": "https://schema.org", "@type": "ProfessionalService",
+  "name": site.name, "url": site_root + "/", "email": site.email, "telephone": site.phone_href,
+  "description": "Nordexa Digital bygger moderne, raske nettsider som gjør besøkende til kunder.",
+  "address": {"@type": "PostalAddress", "addressLocality": "Oslo", "addressCountry": "NO"},
+  "areaServed": "NO", "image": site_root + url_for('static', filename='img/deling.png')
+}|tojson_ld|safe }}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{% for i in faq %}{"@type":"Question","name":{{ i.sporsmal|tojson_ld|safe }},"acceptedAnswer":{"@type":"Answer","text":{{ i.svar|tojson_ld|safe }}}}{% if not loop.last %},{% endif %}{% endfor %}]}</script>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <canvas class="hero-bg" id="aurora" aria-hidden="true"></canvas>
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <div class="hero-content wrap">
+    <h1>
+      <span class="line"><span>Vi bygger nettsider</span></span>
+      <span class="line"><span>som gjør besøkende</span></span>
+      <span class="line"><span class="grad-text">til kunder.</span></span>
+    </h1>
+    <p class="hero-lead">Moderne, raske og konverteringsoptimaliserte nettsider for bedrifter som vil vokse digitalt.</p>
+    <div class="hero-actions">
+      <a class="btn btn-large" href="{{ url_for('kontakt') }}" data-event="cta_topp">Få en gratis vurdering</a>
+      <a class="btn btn-ghost btn-large" href="{{ url_for('tjenester') }}">Se våre tjenester</a>
+    </div>
+    <ul class="hero-points">
+      <li>Gratis første vurdering</li>
+      <li>Ingen bindingstid</li>
+      <li>Tilpasset din bedrift</li>
+    </ul>
+  </div>
+</section>
+
+<section class="trust">
+  <div class="wrap trust-inner">
+    <p>Bygget med moderne teknologi. Designet for resultater.</p>
+    <ul class="tech-list" aria-label="Teknologi vi bygger med">
+      {% for navn in teknologi %}<li>{{ navn }}</li>{% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section wrap" id="tjenester">
+  <div class="section-head">
+    <h2>Våre tjenester</h2>
+    <p>Alt du trenger for å bli funnet, bli forstått og bli valgt på nett.</p>
+  </div>
+
+  <div class="cards">
+    {% for t in tjenester %}
+    <a class="glass-card reveal" href="{{ url_for('tjenester') }}#{{ t.id }}">
+      {{ ikon(t.ikon) }}
+      <h3>{{ t.tittel }}</h3>
+      <p>{{ t.kort }}</p>
+      <span class="card-more">Les mer</span>
+    </a>
+    {% endfor %}
+  </div>
+  <p class="section-foot"><a class="btn" href="{{ url_for('kontakt') }}" data-event="cta_tjenester">Få en gratis vurdering</a></p>
+</section>
+
+<section class="section wrap" id="prosjekter">
+  <div class="section-head">
+    <h2>Arbeid som snakker for seg selv.</h2>
+    <p>Et utvalg av det vi har designet og bygget. Åpne et prosjekt for å se mål, løsning og teknologi.</p>
+  </div>
+
+  <div class="project-grid">
+    {% for p in prosjekter %}{{ prosjektkort(p) }}{% endfor %}
+  </div>
+  <p class="section-foot"><a class="btn" href="{{ url_for('kontakt') }}" data-event="cta_prosjekter">Få en gratis vurdering</a></p>
+</section>
+
+<section class="section why">
+  <div class="wrap why-inner">
+    <div class="why-intro">
+      <h2>Hvorfor Nordexa?</h2>
+      <p class="why-formula">Design + teknologi + forretningsforståelse</p>
+      <p>
+        Vi bygger ikke nettsider bare for at de skal se bra ut. Vi bygger dem for å hjelpe
+        virksomheten din med å få flere kunder.
+      </p>
+    </div>
+    <ul class="why-list">
+      {% for punkt in hvorfor %}
+      <li class="reveal">
+        <h3>{{ punkt.tittel }}</h3>
+        <p>{{ punkt.tekst }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section wrap" id="prosess">
+  <div class="section-head">
+    <h2>Fra idé til ferdig løsning.</h2>
+    <p>Seks steg, i samme rekkefølge hver gang. Du vet alltid hva som skjer nå, og hva som kommer etterpå.</p>
+  </div>
+
+  <ol class="steps steps-six">
+    {% for steg in prosess %}
+    <li class="reveal"><span class="timeline-number">{{ "%02d"|format(loop.index) }}</span><h3>{{ steg.tittel }}</h3><p>{{ steg.tekst }}</p></li>
+    {% endfor %}
+  </ol>
+</section>
+
+{% if omtaler %}
+<section class="section testimonials">
+  <div class="wrap">
+    <div class="section-head"><h2>Hva kundene sier</h2></div>
+    <div class="quote-grid">
+      {% for o in omtaler %}
+      <figure class="quote reveal">
+        <blockquote><p>{{ o.sitat }}</p></blockquote>
+        <figcaption><strong>{{ o.navn }}</strong>, {{ o.rolle }}, {{ o.firma }}</figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section wrap" id="priser">
+  <div class="section-head">
+    <h2>Pakker og priser</h2>
+    <p>Tre utgangspunkter. Du får alltid en fast pris i et skriftlig tilbud før vi begynner.</p>
+  </div>
+  {{ pakker_grid(pakker) }}
+</section>
+
+<section class="section wrap narrow" id="sporsmal">
+  <div class="section-head">
+    <h2>Vanlige spørsmål</h2>
+  </div>
+  {{ faq_liste(faq) }}
+</section>
+
+<section class="section wrap" id="analyse">
+  <div class="audit-teaser reveal">
+    <div class="audit-text">
+      <h2>Hvordan står det til med nettsiden din?</h2>
+      <p>
+        Skriv inn adressen, så sjekker vi forsiden din og gir deg poeng for hastighet, mobil,
+        SEO, tilgjengelighet og sikkerhet, sammen med de tre tingene vi ville forbedret først.
+      </p>
+      <ul class="check-list">
+        <li>Tar noen sekunder</li>
+        <li>Helt gratis, ingen forpliktelser</li>
+      </ul>
+    </div>
+    {{ analyseskjema({"url": "", "email": ""}, {}, "analyse_forside") }}
+  </div>
+</section>
+
+{% include "_cta.html" %}
+{% endblock %}

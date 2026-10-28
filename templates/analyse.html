@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% from "_makroer.html" import analyseskjema with context %}
+{% block title %}Gratis nettsideanalyse | Nordexa Digital{% endblock %}
+{% block description %}Skriv inn adressen til nettsiden din og få poeng for hastighet, mobil, SEO, tilgjengelighet og sikkerhet, og de tre tingene vi ville forbedret først.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <h1>Gratis nettsideanalyse</h1>
+    <p>Finn ut hvordan forsiden din ligger an, og hva som bør fikses først.</p>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="audit-teaser">
+    <div class="audit-text">
+      <h2>Dette sjekker vi</h2>
+      <ul class="check-list">
+        <li><strong>Hastighet:</strong> svartid, komprimering og hva som holder igjen visningen</li>
+        <li><strong>Mobil:</strong> om siden tilpasser seg skjermen og kan zoomes</li>
+        <li><strong>SEO:</strong> tittel, beskrivelse, overskrifter og deling</li>
+        <li><strong>Tilgjengelighet:</strong> alt-tekster, ledetekster og språk</li>
+        <li><strong>Sikkerhet:</strong> HTTPS og beskyttelsen serveren sender med</li>
+      </ul>
+      <p class="muted">
+        Analysen er automatisk og ser bare på forsiden. Den erstatter ikke en full gjennomgang,
+        men viser raskt hvor det er mest å hente.
+      </p>
+    </div>
+    {{ analyseskjema(form, errors, "analyse_side") }}
+  </div>
+</section>
+{% endblock %}

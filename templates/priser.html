@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% from "_makroer.html" import pakker_grid, faq_liste with context %}
+{% block title %}Priser | Nordexa Digital{% endblock %}
+{% block description %}Tre pakker: Start fra 9 900 kr, Vekst fra 19 900 kr og Premium etter avtale. Se hva som er med, og få svar på vanlige spørsmål.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <h1>Transparente priser.<br>Premium kvalitet.</h1>
+    <p>Skreddersydde digitale løsninger for seriøse bedrifter.</p>
+  </div>
+</section>
+
+<section class="section wrap">
+  {{ pakker_grid(pakker) }}
+
+  <p class="section-foot muted">
+    Usikker på hvilken pakke som passer?
+    <a class="text-link" href="{{ url_for('kontakt') }}" data-event="cta_priser">Få en gratis vurdering</a>
+  </p>
+</section>
+
+<section class="section wrap narrow" id="sporsmal">
+  <div class="section-head">
+    <h2>Vanlige spørsmål</h2>
+  </div>
+  {{ faq_liste(faq) }}
+</section>
+
+{% include "_cta.html" %}
+{% endblock %}
